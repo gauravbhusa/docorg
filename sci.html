@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Organizer</title>
+    <link rel="stylesheet" href="styles.css">
+  <script src="https://static.app/js/static-forms.js" type="text/javascript"></script>
+  <script src="https://static.app/js/static.js" type="text/javascript"></script>
+</head>
+<body>
+    <p style="font-size: medium; text-align: center;">Created by Garvit Bhattacharjee, Class X-E, ITL Public School</p>
+    <h1>Document Organizer</h1>
+    <div class="upload-form">
+        <h2>Upload a Document</h2>
+        <form id="uploadForm">
+            <label for="subject">Select Subject:</label>
+            <select id="subject" required>
+                <option value="English">English</option>
+                <option value="Hindi">Hindi</option>
+                <option value="Sanskrit">Sanskrit</option>
+                <option value="French">French</option>
+                <option value="Maths">Maths</option>
+                <option value="Science">Science</option>
+                <option value="SST">SST</option>
+                <option value="AI">AI</option>
+            </select><br><br>
+            <label for="category">Select Category:</label>
+            <select id="category" required>
+                <option value="Sample paper">Sample paper</option>
+                <option value="Notes">Notes</option>
+                <option value="Previous year papers">Previous year papers</option>
+                <option value="MCQs chapterwise">MCQs chapterwise</option>
+                <option value="Sample MCQs complete syllabus">Sample MCQs complete syllabus</option>
+                <option value="Competency based questions">Competency based questions</option>
+            </select><br><br>
+            <label for="fileName">Enter File Name:</label>
+            <input type="text" id="fileName" required><br><br>
+            <label for="fileUpload">Upload File (pdf):</label>
+            <input type="file" id="fileUpload" accept=".pdf" required><br><br>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+    <div id="subjectsContainer">
+        <h2>Uploaded Documents</h2>
+        <div id="English" class="subject-section">
+            <h3>English</h3>
+            <ul class="file-list"></ul>
+        </div>
+        <div id="Hindi" class="subject-section">
+            <h3>Hindi</h3>
+            <ul class="file-list"></ul>
+        </div>
+        <div id="Sanskrit" class="subject-section">
+            <h3>Sanskrit</h3>
+            <ul class="file-list"></ul>
+        </div>
+        <div id="French" class="subject-section">
+            <h3>French</h3>
+            <ul class="file-list"></ul>
+        </div>
+        <div id="Maths" class="subject-section">
+            <h3>Maths</h3>
+            <ul class="file-list"></ul>
+        </div>
+        <div id="Science" class="subject-section">
+            <h3>Science</h3>
+            <ul class="file-list"></ul>
+        </div>
+        <div id="SST" class="subject-section">
+            <h3>SST</h3>
+            <ul class="file-list"></ul>
+        </div>
+        <div id="AI" class="subject-section">
+            <h3>AI</h3>
+            <ul class="file-list"></ul>
+        </div>
+    </div>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const subject = document.getElementById('subject').value;
+            const category = document.getElementById('category').value;
+            const fileName = document.getElementById('fileName').value;
+            const fileUpload = document.getElementById('fileUpload').files[0];
+
+            if (fileUpload) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const fileUrl = e.target.result;
+                    const fileListItem = document.createElement('li');
+                    const fileLink = document.createElement('a');
+                    fileLink.href = fileUrl;
+                    fileLink.target = '_blank';
+                    fileLink.textContent = `${fileName} (${category})`;
+                    fileLink.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const newWindow = window.open();
+                        newWindow.document.write('<html><head><title>' + fileName + '</title></head><body><embed src="' + fileUrl + '" width="100%" height="100%"></embed></body></html>');
+                    });
+                    fileListItem.appendChild(fileLink);
+
+                    const subjectSection = document.getElementById(subject).querySelector('.file-list');
+                    subjectSection.appendChild(fileListItem);
+                };
+                reader.readAsDataURL(fileUpload);
+            }
+        });
+    </script>
+</body>
+</html>
